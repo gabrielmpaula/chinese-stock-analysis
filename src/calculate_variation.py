@@ -1,24 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Dec  9 14:19:47 2017
-
-@author: Gabriel
-"""
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-intCodes = np.genfromtxt('codes.csv',delimiter=';',dtype=str)
-
-i = 0
-
-
+stock_codes = pd.read_csv('codes.csv', squeeze=True, dtype=str)
 col_to_use = ['open','close','high','low','date','ma5','ma10','ma20']
-
-for i in range(0,3162):
-    fData = pd.read_csv(intCodes[i]+".txt",delimiter='\t',usecols = col_to_use)
-    fData['Stock'] = intCodes[i].astype(str)
+index = 0
+for code in stock_codes:
+    index += 1
+    fData = pd.read_csv(code + ".csv", delimiter='\t', usecols = col_to_use)
+    fData['Stock'] = code
     fData['Index'] = i
     fData = fData.iloc[::-1,:]
     fData = fData.tail(15)
@@ -69,5 +59,3 @@ regime_orig = fData.ix[intSize, "Regime"]
 fData.ix[intSize, "Regime"] = 0
 fData.ix[0, "Regime"] = regime_orig
 """
-
-
